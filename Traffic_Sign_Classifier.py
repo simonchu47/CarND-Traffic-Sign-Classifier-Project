@@ -63,20 +63,28 @@ print("Number of classes =", n_classes)
 import matplotlib.pyplot as plt
 # Visualizations will be shown in the notebook.
 #%matplotlib inline
-image = X_train[1000].squeeze()
+image = X_train[10000].squeeze()
 plt.figure(figsize=(1,1))
 plt.imshow(image, cmap="gray")
-print(y_train[1000])
+print(y_train[10000])
 
 ### Preprocess the data here. It is required to normalize the data. Other preprocessing steps could include 
 ### converting to grayscale, etc.
 ### Feel free to use as many code cells as needed.
 import numpy as np
+#original_image = np.array(X_train, dtype=np.int16)
+#print(np.amax(original_image[10000]))
+#print(np.amin(original_image[10000]))
 
 def image_normalize(x):
-    original_image = np.array(x, dtype=np.int16)
-    normalized_image = (original_image - 128.) / 128
-    return normalized_image
+    original_image = np.array(x, dtype=np.float32)
+    #normalized_image = np.array(x, dtype=np.float32)
+    print(np.amax(original_image[0]))
+    for n in range(len(original_image)):
+        maxPixel = np.amax(original_image[n])
+        minPixel = np.amin(original_image[n])
+        original_image[n] = -1.0 + (original_image[n] - minPixel)*2.0/(maxPixel-minPixel)
+    return original_image
 #X_train_normal[:] = [(x - 128.) / 128. for x in X_train]
 #X_train_sub = X_train_normal / 128
 #X_train_normal = X_train - 128.
@@ -92,7 +100,7 @@ X_train, y_train = shuffle(X_train, y_train)
 
 import tensorflow as tf
 
-EPOCHS = 13
+EPOCHS = 20
 BATCH_SIZE = 128
 
 from tensorflow.contrib.layers import flatten
@@ -201,7 +209,11 @@ with tf.Session() as sess:
     saver.save(sess, './ts_lenet')
     print("Model saved")
 
+with tf.Session() as sess:
+    saver.restore(sess, tf.train.latest_checkpoint('.'))
 
+    test_accuracy = evaluate(X_test, y_test)
+    print("Test Accuracy = {:.3f}".format(test_accuracy))
 
 
 
