@@ -19,6 +19,7 @@ The goals / steps of this project are the following:
 [image5]: ./examples/download_1_5.png "Traffic Sign 1_5"
 [image6]: ./examples/download_6_10.png "Traffic Sign 6_10"
 [image7]: ./examples/download_new.png "Traffic Sign new"
+[image13]: ./examples/download_new2.png "Traffic Sign new 2"
 [image8]: ./examples/demo1.png "possibility_1"
 [image9]: ./examples/demo2.png "possibility_2"
 [image10]: ./examples/demo3.png "possibility_3"
@@ -149,31 +150,28 @@ Such result was quite different from the test data accuracy. The possible reason
 First, the image distortion caused by the scaling. For example, the yield sign image was of 273x185 pixels, instead of 1:1 aspect ratio, and some distortion might be generated while it must be downscaled to 32x32 pixels.
 
 Second, the comparably low amounts of samples in training data. According to the analysis on sign distribution of training data, sign of "road narrows on the right" and "turn right ahead" had much fewer samples. Ths situation might let the model learn less features on these kind of signs, and therefore the model would be unable to classify correctly while facing slightly distorted images.
+
+Furthermore, in order to verify my inference, I clipped all the images to nearly 1:1 aspect ratio. And then the model classified them again. The clipped images are shown below.
+
+![alt text][image7]
+![alt text][image13]
+
+This time, except the sign of "Road narrows on the right", all the originally wrong prediction became correct. The Model had 90.0% prediction accuracy on these ten newly clipped images.
+
+Comapred to the 95.0% accuracy on test data set, this result was considerably consistent.
  
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-For the first image, the model is almost very sure that this is a Right-of-way at the next intersection sign (probability of 1.0), and the image does contain a Right-of-way at the next intersection sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| 1.0         			| Right-of-way at the next intersection	| 
-| .00     				| Beware of ice/snow		|
-| .00					| Pedestrians			|
-| .00	      			| Speed limit (100km/h)			|
-| .00				    | Double curve			|
+For the first image, the model is almost very sure that this is a Right-of-way at the next intersection sign (probability of 0.99), and the image does contain a Right-of-way at the next intersection sign. The top five soft max probabilities were shown as below.
 
 ![alt text][image8]
 
-For the second to fifth image, the probability is shown as below
+For the second to fifth image, the probability is shown as below.
 
 ![alt text][image9]
 ![alt text][image10]
 ![alt text][image11]
 ![alt text][image12]
 
-Furthermore, in order to verify my inference, I clipped those images which the model classified wrongly to nearly 1:1 aspect ratio. And then the model classified them again. The clipped images are shown below.
 
-![alt text][image7]
-
-This time, except the sign of "Road narrows on the right", all the originally wrong prediction became correct. 
 
